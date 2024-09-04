@@ -1,0 +1,118 @@
+<style>:root{--background:0 0% 100%;--foreground:240 10% 3.9%;--card:0 0% 100%;--card-foreground:240 10% 3.9%;--popover:0 0% 100%;--popover-foreground:240 10% 3.9%;--primary:142 86% 28%;--primary-foreground:356 29% 98%;--secondary:240 4.8% 95.9%;--secondary-foreground:240 5.9% 10%;--muted:240 4.8% 95.9%;--muted-foreground:240 3.8% 45%;--accent:240 4.8% 95.9%;--accent-foreground:240 5.9% 10%;--destructive:0 72% 51%;--destructive-foreground:0 0% 98%;--border:240 5.9% 90%;--input:240 5.9% 90%;--ring:142 86% 28%;--chart-1:142 88% 28%;--chart-2:140 74% 24%;--chart-3:139 65% 20%;--chart-4:137 55% 15%;--chart-5:141 40% 9%;--radius:0.5rem;}img[src="/placeholder.svg"],img[src="/placeholder-user.jpg"]{filter:sepia(.3) hue-rotate(-60deg) saturate(.5) opacity(0.8) }</style>
+<style>h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; --font-sans-serif: 'Inter'; }
+</style>
+<style>body { font-family: 'Inter', sans-serif; --font-sans-serif: 'Inter'; }
+</style>
+<form (submit)="handleSubmit($event)" class="grid grid-cols-2 gap-4">
+  <div class="grid gap-2">
+    <label for="cancha" class="text-sm font-medium">Numero de Cancha</label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+      id="cancha"
+      required
+      name="cancha"
+      type="number"
+      [(ngModel)]="reserva.cancha"
+      
+    />
+  </div>
+  <div class="grid gap-2">
+    <label for="fecha" class="text-sm font-medium">Fecha</label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+      id="fecha"
+      required
+      name="fecha"
+      type="date"
+      [(ngModel)]="reserva.fecha"
+    />
+  </div>
+  <div class="grid gap-2">
+    <label for="nombre" class="text-sm font-medium">Nombre</label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+      id="nombre"
+      required
+      name="nombre"
+      type="text"
+      [(ngModel)]="reserva.nombre"
+    />
+  </div>
+  <div class="grid gap-2">
+    <label for="hora" class="text-sm font-medium">Hora</label>
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+      id="hora"
+      required
+      name="hora"
+      type="number"
+      [(ngModel)]="reserva.hora"
+    />
+  </div>
+  <button
+    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 col-span-2"
+    type="submit " [disabled]="!isReservaValid()"
+  >
+    Reservar
+  </button>
+
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4">Mira todas las reservas</h2>
+    <div class="relative w-full overflow-auto">
+      <div class="relative w-full overflow-auto">
+        <table class="w-full caption-bottom text-sm">
+          <thead class="[&amp;_tr]:border-b">
+            <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                Cancha
+              </th>
+              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                Fecha
+              </th>
+              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                Nombre
+              </th>
+              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                Hora
+              </th>
+            </tr>
+          </thead>
+          <tbody class="[&amp;_tr:last-child]:border-0">
+              <tr *ngFor="let reserva of reservas" class="border-b transition-colors hover:bg-muted/50">
+                <td class="px-4 py-2">{{ reserva.cancha }}</td>
+                <td class="px-4 py-2">{{ reserva.fecha }}</td>
+                <td class="px-4 py-2">{{ reserva.nombre }}</td>
+                <td class="px-4 py-2">{{ reserva.hora }}</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h2 class="text-2xl font-bold mb-4">Busca tu reserva por id</h2>
+    <div class="flex items-center gap-2">
+      <input
+        name="buscarporid"
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex-1"
+        type="search"
+        placeholder="busca una reserva por id"
+        [(ngModel)]="reservaId"
+      />
+      <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" 
+      (click)="buscarReservaPorId()"
+      >Buscar</button>
+    </div>
+    <div *ngIf="reservaEncontrada; else elseContent">
+      <h3 class="text-xl font-bold mt-4">Reserva Encontrada</h3>
+      <p><strong>Cancha:</strong> {{ reservaEncontrada.cancha }}</p>
+      <p><strong>Fecha:</strong> {{ reservaEncontrada.fecha }}</p>
+      <p><strong>Nombre:</strong> {{ reservaEncontrada.nombre }}</p>
+      <p><strong>Hora:</strong> {{ reservaEncontrada.hora }}</p>
+    </div>
+    <ng-template #elseContent>
+      <br>
+      <p>No se encontraron reservas. 😢 </p>
+    </ng-template>
+  </div>
+</form>
